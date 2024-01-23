@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Usuarios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1>Listado de Usuarios</h1>
+    <br/>
+    <table class="table table-responsive table-sm table-dark table-striped table-bordered table-hover">
+        <thead>
+            <tr class="info">
+                <th>usuario</th>
+                <th>clave</th>
+                <th>nombreCompleto</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="u : ${lista}">
+                <tr>
+                    <td th:text="${u.usuario}"></td>
+                    <td th:text="${u.clave}"></td>
+                    <td th:text="${u.nombreCompleto}"></td>
+                    <td>
+                        <a th:href="@{/editar/{usuario}(usuario=${u.usuario})}">Editar</a>
+                        <a th:href="@{/eliminar/{usuario}(usuario=${u.usuario})}">Eliminar</a>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+    <br/>
+    <a href="/crear" class="btn btn-primary">Crear Usuario</a>
+</body>
+</html>

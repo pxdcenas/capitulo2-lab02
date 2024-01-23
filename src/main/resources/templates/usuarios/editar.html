@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear usuario</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row d-flex justify-content-center mx-auto">
+
+        <h1>Editar datos del usuario</h1>
+        <div class="col-md-6 col-xs-12 div-style">
+            <form method="post" action="/actualizar" th:object="${usuarioBean}">
+                <table>
+                    <tr>
+                        <td><label for="usuario">Usuario: </label></td>
+                        <td><input type="text" id="usuario" th:field="*{usuario}" class="form-control text-box formFieldError" readonly /></td>
+                        <td><!-- Aquí se mostrarán los errores --></td>
+                    </tr>
+                    <tr>
+                        <td><label for="clave">Clave: </label></td>
+                        <td><input type="text" id="clave" th:field="*{clave}" class="form-control text-box formFieldError"/></td>
+                        <td><!-- Aquí se mostrarán los errores --></td>
+                    </tr>
+                    <tr>
+                        <td><label for="nombreCompleto">Nombre Completo: </label></td>
+                        <td><input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control text-box formFieldError"/></td>
+                        <td><!-- Aquí se mostrarán los errores --></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <a href="/listarUsuarios"  class="btn btn-primary">Volver</a>
+                            <input type="submit" value="Actualizar" class="btn btn-primary button-submit"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
