@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Crear usuario</title>
@@ -13,22 +13,22 @@
 
         <h1>Datos del usuario</h1>
         <div class="col-md-6 col-xs-12 div-style">
-            <form method="post" action="/grabar">
+            <form method="post" action="/grabar" th:object="${usuarioBean}">
                 <table>
                     <tr>
                         <td><label for="usuario">Usuario: </label></td>
                         <td><input type="text" id="usuario" name="usuario" class="form-control text-box formFieldError" /></td>
-                        <td><!-- Aquí se mostrarán los errores --></td>
+                        <td><span th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}"></span></td>
                     </tr>
                     <tr>
                         <td><label for="clave">Clave: </label></td>
                         <td><input type="password" id="clave" name="clave" class="form-control text-box formFieldError"/></td>
-                        <td><!-- Aquí se mostrarán los errores --></td>
+                        <td><span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></span></td>
                     </tr>
                     <tr>
                         <td><label for="nombreCompleto">Nombre Completo: </label></td>
                         <td><input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control text-box formFieldError"/></td>
-                        <td><!-- Aquí se mostrarán los errores --></td>
+                        <td><span th:if="${#fields.hasErrors('nombreCompleto')}" th:errors="*{nombreCompleto}"></span></td>
                     </tr>
                     <tr>
                         <td colspan="1">

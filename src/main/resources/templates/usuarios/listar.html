@@ -28,6 +28,8 @@
                     <td>
                         <a th:href="@{/editar/{usuario}(usuario=${u.usuario})}">Editar</a>
                         <a th:href="@{/eliminar/{usuario}(usuario=${u.usuario})}">Eliminar</a>
+
+                        <a href="#" th:attr="data-usuario=${u.usuario}" th:onclick="eliminar(this.getAttribute('data-usuario'))">Eliminar2</a>
                     </td>
                 </tr>
             </th:block>
@@ -35,5 +37,21 @@
     </table>
     <br/>
     <a href="/crear" class="btn btn-primary">Crear Usuario</a>
+    <script>
+       function eliminar(usuario){
+           if(confirm('¿Está seguro que desea eliminar ' + usuario + '?')){
+               $.ajax({
+                   type: "POST",
+                   url: "/eliminar",
+                   data: {
+                       usuario: usuario
+                   },
+                   success: function(response){
+                       window.location.href = "/listarUsuarios";
+                   }
+               });
+           }
+       }
+    </script>
 </body>
 </html>

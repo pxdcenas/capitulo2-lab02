@@ -2,8 +2,11 @@ package edu.cibertec.capitulo2.lab02.controller;
 
 import edu.cibertec.capitulo2.lab02.dto.UsuarioDTO;
 import edu.cibertec.capitulo2.lab02.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,14 +37,20 @@ public class UsuarioController {
     }
 
     @GetMapping("/crear")
-    public String crear(){
-        return "usuarios/crear";
+    public ModelAndView crear(){
+        return new ModelAndView("usuarios/crear","usuarioBean",new UsuarioDTO());
     }
 
     @PostMapping("/grabar")
-    public String grabar(UsuarioDTO usuarioDTO){
-        usuarioService.insertarUsuario(usuarioDTO);
-        return "redirect:/listarUsuarios";
+    public ModelAndView grabar(@Valid @ModelAttribute("usuarioBean") UsuarioDTO usuarioDTO, BindingResult result){
+        ModelAndView mv = null;
+        if (result.hasErrors()) {
+            mv = new ModelAndView("usuarios/crear", "usuarioBean", usuarioDTO);
+        } else {
+            usuarioService.insertarUsuario(usuarioDTO);
+            mv = new ModelAndView("redirect:/listarUsuarios");
+        }
+        return mv;
     }
 
     @GetMapping("/editar/{usuario}")
@@ -57,6 +66,12 @@ public class UsuarioController {
 
     @GetMapping("/eliminar/{usuario}")
     public String eliminar(@ModelAttribute("usuario") String usuario){
+        usuarioService.eliminarUsuario(usuario);
+        return "redirect:/listarUsuarios";
+    }
+
+    @PostMapping("/eliminar")
+    public String eliminarPost(@ModelAttribute("usuario") String usuario){
         usuarioService.eliminarUsuario(usuario);
         return "redirect:/listarUsuarios";
     }
