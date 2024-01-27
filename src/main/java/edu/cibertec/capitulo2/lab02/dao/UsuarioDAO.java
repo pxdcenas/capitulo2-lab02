@@ -51,4 +51,14 @@ public class UsuarioDAO {
             }
         }
     }
+
+    public UsuarioDTO validarLogin(UsuarioDTO usuario) {
+        if (usuario.getUsuario().equalsIgnoreCase("admin") &&
+                usuario.getClave().equals("admin"))
+            usuario.setNombreCompleto("Dany Cenas Vásquez");
+        else
+            usuario = null;
+
+        return usuario;
+    }
 }

@@ -32,4 +32,8 @@ public class UsuarioService {
     public void eliminarUsuario(String usuario){
         usuarioDAO.eliminarUsuario(usuario);
     }
+
+    public UsuarioDTO validarLogin(UsuarioDTO usuario) {
+        return usuarioDAO.validarLogin(usuario);
+    }
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:if="${usuario.foto != null}">
+        <img th:src="'data:image/png;base64,' + ${usuario.getImageDataBase64()}"/>
+    </div>
+
+    <div th:if="${usuario.foto == null}">
+        <h1>Usuario aún sin foto</h1>
+        <form action="/uploadFile" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="usuario" th:value="${usuario.usuario}">
+            <label>Seleccione foto:</label>
+            <input type="file" name="file">
+            <br/>
+            <input type="submit" value="Guardar">
+        </form>
+    </div>
+    <br/>
+    <a href="/listarUsuarios">Volver</a>
+</body>
+</html>

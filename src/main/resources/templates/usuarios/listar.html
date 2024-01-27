@@ -6,8 +6,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
 </head>
 <body>
+    <img th:src="@{/img/cibertec.png}"/>
+    <br/>
     <h1>Listado de Usuarios</h1>
     <br/>
     <table class="table table-responsive table-sm table-dark table-striped table-bordered table-hover">
@@ -16,6 +19,7 @@
                 <th>usuario</th>
                 <th>clave</th>
                 <th>nombreCompleto</th>
+                <th>foto</th>
                 <th>Opciones</th>
             </tr>
         </thead>
@@ -25,6 +29,12 @@
                     <td th:text="${u.usuario}"></td>
                     <td th:text="${u.clave}"></td>
                     <td th:text="${u.nombreCompleto}"></td>
+                    <td>
+                        <a th:href="@{/foto/{usuario}(usuario=${u.usuario})}">foto</a>
+                        <div th:if="${u.foto != null}">
+                            <img th:src="'data:image/png;base64,' + ${u.getImageDataBase64()}" height="20px" width="20px"/>
+                        </div>
+                    </td>
                     <td>
                         <a th:href="@{/editar/{usuario}(usuario=${u.usuario})}">Editar</a>
                         <a th:href="@{/eliminar/{usuario}(usuario=${u.usuario})}">Eliminar</a>
@@ -38,20 +48,7 @@
     <br/>
     <a href="/crear" class="btn btn-primary">Crear Usuario</a>
     <script>
-       function eliminar(usuario){
-           if(confirm('¿Está seguro que desea eliminar ' + usuario + '?')){
-               $.ajax({
-                   type: "POST",
-                   url: "/eliminar",
-                   data: {
-                       usuario: usuario
-                   },
-                   success: function(response){
-                       window.location.href = "/listarUsuarios";
-                   }
-               });
-           }
-       }
+
     </script>
 </body>
 </html>

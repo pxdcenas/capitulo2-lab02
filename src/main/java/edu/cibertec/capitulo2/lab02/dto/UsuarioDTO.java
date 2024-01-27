@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Base64;
+
 public class UsuarioDTO {
 
     @Size(min = 3, max = 20, message = "Error en el tamaño")
@@ -16,6 +18,8 @@ public class UsuarioDTO {
 
     @NotNull(message = "NotNull")
     private String nombreCompleto;
+
+    private byte[] foto;
 
     public UsuarioDTO() {
     }
@@ -49,4 +53,18 @@ public class UsuarioDTO {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public String getImageDataBase64() {
+        return Base64.getEncoder().encodeToString(foto);
+    }
+
+
 }
