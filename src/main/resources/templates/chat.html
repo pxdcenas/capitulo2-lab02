@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        $(document).ready(function () {
+            connect();
+
+            $("#send-message").click(function () {
+                var message = $("#message").val();
+                stompClient.send("/app/websocket", {}, message);
+            });
+        });
+
+        function connect() {
+            var socket = new SockJS("/websocket");
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                stompClient.subscribe("/topic/response", function (message) {
+                    console.log("Mensaje recibido del servidor: " + message.body);
+                    $("#response").append("<p>" + message.body + "</p>");
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Chat</h1>
+    <input type="text" id="message"/>
+    <button id="send-message">Enviar</button>
+    <h2>Mensajes</h2>
+    <div id="response"></div>
+</body>
+</html>

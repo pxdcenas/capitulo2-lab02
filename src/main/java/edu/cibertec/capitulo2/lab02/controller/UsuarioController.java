@@ -1,5 +1,6 @@
 package edu.cibertec.capitulo2.lab02.controller;
 
+import edu.cibertec.capitulo2.lab02.beans.ApplicationBean;
 import edu.cibertec.capitulo2.lab02.beans.RequestBean;
 import edu.cibertec.capitulo2.lab02.beans.SessionBean;
 import edu.cibertec.capitulo2.lab02.dto.UsuarioDTO;
@@ -8,6 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +56,8 @@ public class UsuarioController {
     public String listarUsuarios(Model modelo){
         if (sessionBean.isAutenticado()) {
             modelo.addAttribute("lista", usuarioService.getListaUsuarios());
+            applicationBean.setContador(usuarioService.getListaUsuarios().size());
+            modelo.addAttribute("tamanio",applicationBean.getContador());
             return "usuarios/listar";
         }
         return "redirect:/";
@@ -134,5 +140,26 @@ public class UsuarioController {
         HttpSession session = request.getSession();
         session.invalidate();
         return "redirect:/";
+    }
+    @Autowired
+    private ApplicationBean applicationBean;
+
+    @GetMapping("/chat")
+    public String chat(){
+        return "chat";
+    }
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @MessageMapping("/websocket")
+    public void websocket(String message) {
+        messagingTemplate.convertAndSend("/topic/response", "Respuesta del servidor: " + message);
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void enviarMensajesAutomaticos(){
+        String mensaje = "Mensaje automático enviado a las " + LocalDateTime.now();
+        messagingTemplate.convertAndSend("/topic/response", mensaje);
     }
 }
